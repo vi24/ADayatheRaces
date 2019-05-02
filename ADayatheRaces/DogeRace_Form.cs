@@ -12,12 +12,12 @@ namespace ADayatheRaces
 {
     public partial class DogeRace_Form : Form
     {
-        private Greyhound[] GreyhoundArray;
-        private Guy[] Guys;
-        private Guy currentGuy;
-        private bool gameover;
-        public const int RACETRACK_LENGTH = 470;
-        public const int STARTING_POSITION = 12;
+        public Greyhound[] GreyhoundArray;
+        public Guy[] Guys;
+        private Guy _currentGuy;
+        private bool _gameover;
+        public const int Racetrack_Length = 470;
+        public const int Starting_Position = 12;
 
         public DogeRace_Form()
         {
@@ -31,34 +31,34 @@ namespace ADayatheRaces
             GreyhoundArray[0] = new Greyhound
             {
                 Location = 0,
-                RacetrackLength = RACETRACK_LENGTH,
+                RacetrackLength = Racetrack_Length,
                 MyPictureBox = picDog1,
                 Randomizer = randomizer,
-                StartingPosition = STARTING_POSITION
+                StartingPosition = Starting_Position
             };
             GreyhoundArray[1] = new Greyhound
             {
                 Location = 0,
-                RacetrackLength = RACETRACK_LENGTH,
+                RacetrackLength = Racetrack_Length,
                 MyPictureBox = picDog2,
                 Randomizer = randomizer,
-                StartingPosition = STARTING_POSITION
+                StartingPosition = Starting_Position
             };
             GreyhoundArray[2] = new Greyhound
             {
                 Location = 0,
-                RacetrackLength = RACETRACK_LENGTH,
+                RacetrackLength = Racetrack_Length,
                 MyPictureBox = picDog3,
                 Randomizer = randomizer,
-                StartingPosition = STARTING_POSITION
+                StartingPosition = Starting_Position
             };
             GreyhoundArray[3] = new Greyhound
             {
                 Location = 0,
-                RacetrackLength = RACETRACK_LENGTH,
+                RacetrackLength = Racetrack_Length,
                 MyPictureBox = picDog4,
                 Randomizer = randomizer,
-                StartingPosition = STARTING_POSITION
+                StartingPosition = Starting_Position
             };
             Guys = new Guy[3];
             Guys[0] = new Guy { Cash = 50, Name = "Joe", MyLabel = joeBetLabel, MyRadioButton = joeRadioButton };
@@ -77,42 +77,42 @@ namespace ADayatheRaces
 
         private void JoeRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            currentGuy = Guys[0];
-            guyName.Text = currentGuy.Name;
+            _currentGuy = Guys[0];
+            guyName.Text = _currentGuy.Name;
         }
 
         private void BobRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            currentGuy = Guys[1];
-            guyName.Text = currentGuy.Name;
+            _currentGuy = Guys[1];
+            guyName.Text = _currentGuy.Name;
         }
 
         private void AIRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            currentGuy = Guys[2];
-            guyName.Text = currentGuy.Name;
+            _currentGuy = Guys[2];
+            guyName.Text = _currentGuy.Name;
         }
 
         private void RaceButton_Click(object sender, EventArgs e)
         {
             bettingParlor.Enabled = false;
             timer1.Start();
-            gameover = false;
+            _gameover = false;
         }
 
         private void BetButton_Click(object sender, EventArgs e)
         {
-            currentGuy.PlaceBet((int)betNumericUpDown.Value, (int)dogNumberNumericUpDown.Value);
-            currentGuy.UpdateLabels();
+            _currentGuy.PlaceBet((int)betNumericUpDown.Value, (int)dogNumberNumericUpDown.Value);
+            _currentGuy.UpdateLabels();
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
             for (int i = 0; i < GreyhoundArray.Length; i++)
             {
-                if (!gameover && GreyhoundArray[i].Run())
+                if (!_gameover && GreyhoundArray[i].Run())
                 {
-                    gameover = true;
+                    _gameover = true;
                     MessageBox.Show("Dog " + (i + 1) + " won the race");
                     timer1.Stop();
                     for (int j = 0; j < Guys.Length; j++)
@@ -125,7 +125,7 @@ namespace ADayatheRaces
                     }
                 }
             }
-            if (gameover)
+            if (_gameover)
             {
                 bettingParlor.Enabled = true;
             }
