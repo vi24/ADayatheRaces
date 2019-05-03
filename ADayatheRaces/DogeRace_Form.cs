@@ -12,64 +12,65 @@ namespace ADayatheRaces
 {
     public partial class DogeRace_Form : Form
     {
-        public Greyhound[] GreyhoundArray;
-        public Guy[] Guys;
+        public Greyhound[] _greyhoundArray;
+        public Guy[] _guys;
         private Guy _currentGuy;
         private bool _gameover;
-        public const int Racetrack_Length = 470;
-        public const int Starting_Position = 12;
+        private Random _randomizer;
+        public const int RACETRACK_LENGTH = 470;
+        public const int STARTING_POSITION = 12;
 
         public DogeRace_Form()
         {
             InitializeComponent();
+            _randomizer = new Random();
+            _greyhoundArray = new Greyhound[4];
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Random randomizer = new Random();
-            GreyhoundArray = new Greyhound[4];
-            GreyhoundArray[0] = new Greyhound
+            _greyhoundArray[0] = new Greyhound
             {
                 Location = 0,
-                RacetrackLength = Racetrack_Length,
+                RacetrackLength = RACETRACK_LENGTH,
                 MyPictureBox = picDog1,
-                Randomizer = randomizer,
-                StartingPosition = Starting_Position
+                Randomizer = _randomizer,
+                StartingPosition = STARTING_POSITION
             };
-            GreyhoundArray[1] = new Greyhound
+            _greyhoundArray[1] = new Greyhound
             {
                 Location = 0,
-                RacetrackLength = Racetrack_Length,
+                RacetrackLength = RACETRACK_LENGTH,
                 MyPictureBox = picDog2,
-                Randomizer = randomizer,
-                StartingPosition = Starting_Position
+                Randomizer = _randomizer,
+                StartingPosition = STARTING_POSITION
             };
-            GreyhoundArray[2] = new Greyhound
+            _greyhoundArray[2] = new Greyhound
             {
                 Location = 0,
-                RacetrackLength = Racetrack_Length,
+                RacetrackLength = RACETRACK_LENGTH,
                 MyPictureBox = picDog3,
-                Randomizer = randomizer,
-                StartingPosition = Starting_Position
+                Randomizer = _randomizer,
+                StartingPosition = STARTING_POSITION
             };
-            GreyhoundArray[3] = new Greyhound
+            _greyhoundArray[3] = new Greyhound
             {
                 Location = 0,
-                RacetrackLength = Racetrack_Length,
+                RacetrackLength = RACETRACK_LENGTH,
                 MyPictureBox = picDog4,
-                Randomizer = randomizer,
-                StartingPosition = Starting_Position
+                Randomizer = _randomizer,
+                StartingPosition = STARTING_POSITION
             };
-            Guys = new Guy[3];
-            Guys[0] = new Guy { Cash = 50, Name = "Joe", MyLabel = joeBetLabel, MyRadioButton = joeRadioButton };
-            Guys[1] = new Guy { Cash = 75, Name = "Bob", MyLabel = bobBetLabel, MyRadioButton = bobRadioButton };
-            Guys[2] = new Guy { Cash = 45, Name = "AI", MyLabel = aiBetLabel, MyRadioButton = aIRadioButton };
-            Guys[0].MyBet = new Bet { Amount = 0, Dog = 1, Bettor = Guys[0] };
-            Guys[1].MyBet = new Bet { Amount = 0, Dog = 1, Bettor = Guys[1] };
-            Guys[2].MyBet = new Bet { Amount = 0, Dog = 1, Bettor = Guys[2] };
-            for (int i = 0; i < Guys.Length; i++)
+            _guys = new Guy[3];
+            _guys[0] = new Guy { Cash = 50, Name = "Joe", MyLabel = joeBetLabel, MyRadioButton = joeRadioButton };
+            _guys[1] = new Guy { Cash = 75, Name = "Bob", MyLabel = bobBetLabel, MyRadioButton = bobRadioButton };
+            _guys[2] = new Guy { Cash = 45, Name = "AI", MyLabel = aiBetLabel, MyRadioButton = aIRadioButton };
+            _guys[0].MyBet = new Bet { Amount = 0, Dog = 1, Bettor = _guys[0] };
+            _guys[1].MyBet = new Bet { Amount = 0, Dog = 1, Bettor = _guys[1] };
+            _guys[2].MyBet = new Bet { Amount = 0, Dog = 1, Bettor = _guys[2] };
+            for (int i = 0; i < _guys.Length; i++)
             {
-                Guys[i].UpdateLabels();
+                _guys[i].UpdateLabels();
             }
             minimumBetLabel.Text = "Miniumum bet: " + betNumericUpDown.Minimum.ToString() + " bucks";
             timer1.Interval = 500;
@@ -77,19 +78,19 @@ namespace ADayatheRaces
 
         private void JoeRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            _currentGuy = Guys[0];
+            _currentGuy = _guys[0];
             guyName.Text = _currentGuy.Name;
         }
 
         private void BobRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            _currentGuy = Guys[1];
+            _currentGuy = _guys[1];
             guyName.Text = _currentGuy.Name;
         }
 
         private void AIRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            _currentGuy = Guys[2];
+            _currentGuy = _guys[2];
             guyName.Text = _currentGuy.Name;
         }
 
@@ -108,20 +109,20 @@ namespace ADayatheRaces
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            for (int i = 0; i < GreyhoundArray.Length; i++)
+            for (int i = 0; i < _greyhoundArray.Length; i++)
             {
-                if (!_gameover && GreyhoundArray[i].Run())
+                if (!_gameover && _greyhoundArray[i].Run())
                 {
                     _gameover = true;
                     MessageBox.Show("Dog " + (i + 1) + " won the race");
                     timer1.Stop();
-                    for (int j = 0; j < Guys.Length; j++)
+                    for (int j = 0; j < _guys.Length; j++)
                     {
-                        Guys[j].Collect(i);
+                        _guys[j].Collect(i);
                     }
-                    for (int k = 0; k < GreyhoundArray.Length; k++)
+                    for (int k = 0; k < _greyhoundArray.Length; k++)
                     {
-                        GreyhoundArray[k].TakeStartingPosition();
+                        _greyhoundArray[k].TakeStartingPosition();
                     }
                 }
             }
